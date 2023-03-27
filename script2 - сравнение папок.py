@@ -4,16 +4,13 @@ import os
 import binascii
 import tkinter as tk
 from tkinter import filedialog, ttk
-from openpyxl import Workbook
-from openpyxl.styles import PatternFill
-
+import xlwt
 
 def get_crc32(file_path):
     with open(file_path, 'rb') as f:
         buf = f.read()
         crc32 = format(binascii.crc32(buf), '08X')
     return crc32
-
 
 def get_files_data(folder):
     result = {}
@@ -26,48 +23,49 @@ def get_files_data(folder):
             result[relative_path] = (size, crc32)
     return result
 
+def save_xls(file_data1, file_data2, output_path):
+    wb = xlwt.Workbook()
+    ws = wb.add_sheet('output')
 
-def save_xlsx(file_data1, file_data2, output_path):
-    wb = Workbook()
-    ws = wb.active
+    headers = ["Path 1", "Size 1", "CRC-32 1", "Path 2", "Size 2", "CRC-32 2"]
+    for j, header in enumerate(headers):
+        ws.write(0, j, header)
 
-    ws.append(["Path 1", "Size 1", "CRC-32 1", "Path 2", "Size 2", "CRC-32 2"])
-
-    red_fill = PatternFill(start_color='FFFF00', end_color='FFFF00', fill_type='solid')
-
+    row = 1
     for key in sorted(set(file_data1.keys()) | set(file_data2.keys())):
         data1 = file_data1.get(key, ('-', '-'))
         data2 = file_data2.get(key, ('-', '-'))
 
-        row = [key, data1[0], data1[1], key, data2[0], data2[1]]
-        ws.append(row)
-
         if data1 != data2:
-            for cell in ws[ws.max_row]:
-                cell.fill = red_fill
+            style = xlwt.easyxf('pattern: pattern solid, fore_colour yellow;')
+        else:
+            style = xlwt.XFStyle()
+
+        row_data = [key, data1[0], data1[1], key, data2[0], data2[1]]
+        for j, cell_value in enumerate(row_data):
+            ws.write(row, j, cell_value, style)
+
+        row += 1
 
     wb.save(output_path)
-
 
 def run_comparison(folder1, folder2):
     if folder1 and folder2:
         file_data1 = get_files_data(folder1)
         file_data2 = get_files_data(folder2)
 
-        output_path = 'output.xlsx'
-        save_xlsx(file_data1, file_data2, output_path)
+        output_path = 'output.xls'
+        save_xls(file_data1, file_data2, output_path)
 
         print(f'Файл {output_path} успешно сохранен.')
     else:
         print("Вы не выбрали папки. Завершение работы.")
-
 
 def select_folder(entry):
     folder = filedialog.askdirectory()
     if folder:
         entry.delete(0, tk.END)
         entry.insert(0, folder)
-
 
 def main():
     root = tk.Tk()
@@ -99,8 +97,9 @@ def main():
 
     root.mainloop()
 
-
 if __name__ == '__main__':
     main()
+
+
 
    
