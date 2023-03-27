@@ -213,7 +213,7 @@ def run_directory_explorer():
 
 def main():
     root = tk.Tk()
-    root.title("Scripts Hub")
+    root.title("Для ведомости и спецфикации")
 
     change_date_button = tk.Button(root, text="Смена даты", command=run_change_date)
     change_date_button.pack(padx=20, pady=10)
