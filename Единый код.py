@@ -87,15 +87,18 @@ def run_compare_folders():
 
         row = 1
         for key in sorted(set(file_data1.keys()) | set(file_data2.keys())):
-            data1 = file_data1.get(key, ('-', '-'))
-            data2 = file_data2.get(key, ('-', '-'))
+            data1_raw = file_data1.get(key, ('-', '-'))
+            data1 = (data1_raw[0], "{:,} байт".format(data1_raw[0]).replace(',', ' ') if isinstance(data1_raw[0], int) else data1_raw[0], data1_raw[1])
+
+            data2_raw = file_data2.get(key, ('-', '-'))
+            data2 = (data2_raw[0], "{:,} байт".format(data2_raw[0]).replace(',', ' ') if isinstance(data2_raw[0], int) else data2_raw[0], data2_raw[1])
 
             if data1 != data2:
                 style = xlwt.easyxf('pattern: pattern solid, fore_colour yellow;')
             else:
                 style = xlwt.XFStyle()
 
-            row_data = [key, data1[0], data1[1], key, data2[0], data2[1]]
+            row_data = [key, data1[1], data1[2], key, data2[1], data2[2]]
             for j, cell_value in enumerate(row_data):
                 ws.write(row, j, cell_value, style)
 
