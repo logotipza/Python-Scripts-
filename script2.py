@@ -1,3 +1,5 @@
+# Сравнение папок
+
 import os
 import binascii
 import tkinter as tk

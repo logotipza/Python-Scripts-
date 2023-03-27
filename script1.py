@@ -1,3 +1,5 @@
+# Смена даты
+
 import os
 import datetime
 import tkinter as tk

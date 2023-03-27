@@ -1,3 +1,5 @@
+# Выбор скрипта
+
 import tkinter as tk
 from tkinter import messagebox
 import script1
