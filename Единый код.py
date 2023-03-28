@@ -5,6 +5,7 @@ import hashlib
 import zlib
 import xlwt
 import tkinter as tk
+from tkinter import ttk
 from tkinter import filedialog, messagebox, ttk
 from tkcalendar import DateEntry
 
