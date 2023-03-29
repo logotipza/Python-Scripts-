@@ -7,7 +7,7 @@ import xlwt
 import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog, messagebox, ttk
-from tkcalendar import DateEntry
+from tkcalendar import Calendar
 
 def run_change_date():
     def change_timestamps(path, new_date):
@@ -21,7 +21,7 @@ def run_change_date():
 
     def run_script():
         folder_path = folder_entry.get()
-        new_date = datetime.datetime.strptime(calendar.get(), "%d.%m.%Y").date()
+        new_date = calendar.selection_get()
 
         for root, dirs, files in os.walk(folder_path):
             for file in files:
@@ -52,7 +52,7 @@ def run_change_date():
     date_label = tk.Label(frame, text="Выберите дату:")
     date_label.grid(row=2, column=0, pady=10, sticky=tk.W)
 
-    calendar = DateEntry(frame, width=12, background='darkblue', foreground='white', borderwidth=2, date_pattern='dd.mm.yyyy')
+    calendar = Calendar(frame, selectmode='day', year=2023, month=3, day=27)
     calendar.grid(row=3, column=0, columnspan=2, padx=5)
 
     run_button = tk.Button(frame, text="ОК", command=run_script)
