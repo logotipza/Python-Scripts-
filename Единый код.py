@@ -63,11 +63,11 @@ def run_change_date():
     month_combobox.grid(row=3, column=1)
 
     year_var = tk.StringVar(frame)
-    year_combobox = ttk.Combobox(frame, textvariable=year_var, values=list(range(1900, 2100)), width=5)
+    year_combobox = ttk.Combobox(frame, textvariable=year_var, values=list(range(1990, 2100)), width=5)
     year_combobox.grid(row=3, column=2)
 
     run_button = tk.Button(frame, text="ОК", command=run_script)
-    run_button.grid(row=3, column=2, padx=5)
+    run_button.grid(row=4, column=1, padx=5)
 
     app.mainloop()
 
