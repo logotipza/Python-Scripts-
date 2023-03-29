@@ -7,7 +7,6 @@ import xlwt
 import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog, messagebox, ttk
-from tkcalendar import Calendar
 
 def run_change_date():
     def change_timestamps(path, new_date):
@@ -21,7 +20,10 @@ def run_change_date():
 
     def run_script():
         folder_path = folder_entry.get()
-        new_date = calendar.selection_get()
+        day = int(day_var.get())
+        month = int(month_var.get())
+        year = int(year_var.get())
+        new_date = datetime.date(year, month, day)
 
         for root, dirs, files in os.walk(folder_path):
             for file in files:
@@ -52,8 +54,17 @@ def run_change_date():
     date_label = tk.Label(frame, text="Выберите дату:")
     date_label.grid(row=2, column=0, pady=10, sticky=tk.W)
 
-    calendar = Calendar(frame, selectmode='day', year=2023, month=3, day=27)
-    calendar.grid(row=3, column=0, columnspan=2, padx=5)
+    day_var = tk.StringVar(frame)
+    day_combobox = ttk.Combobox(frame, textvariable=day_var, values=list(range(1, 32)), width=5)
+    day_combobox.grid(row=3, column=0)
+
+    month_var = tk.StringVar(frame)
+    month_combobox = ttk.Combobox(frame, textvariable=month_var, values=list(range(1, 13)), width=5)
+    month_combobox.grid(row=3, column=1)
+
+    year_var = tk.StringVar(frame)
+    year_combobox = ttk.Combobox(frame, textvariable=year_var, values=list(range(1900, 2100)), width=5)
+    year_combobox.grid(row=3, column=2)
 
     run_button = tk.Button(frame, text="ОК", command=run_script)
     run_button.grid(row=3, column=2, padx=5)
